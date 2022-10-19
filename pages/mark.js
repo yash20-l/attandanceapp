@@ -8,7 +8,7 @@ const Mark = () => {
     const [AllLectures, setAllLectures] = useState([])
     const [Date, SetDate] = useState('Loading...')
     useEffect(() => {
-        axios.get('http://192.168.1.6:8000/getlectures').then((res) => {
+        axios.get('http://192.168.1.3:8000/getlectures').then((res) => {
             console.log(res.data);
             setAllLectures(res.data)
         })
@@ -35,7 +35,7 @@ const Mark = () => {
                 Status: document.getElementById(lec._id).value
             })
         })
-        axios.post('http://192.168.1.6:8000/markattandance', data).then((res) => {
+        axios.post('http://192.168.1.3:8000/markattandance', data).then((res) => {
             console.log(res.status);
         })
     }
@@ -73,7 +73,7 @@ const Mark = () => {
             </div>
             <div className="card bg-green-600 h-20 rounded-xl flex flex-col align-center justify-center my-[10rem]">
                 <div className="text">
-                    <h1 className='text-center text-2xl text-white' style={{ fontWeight: 500 }}>Attandance Updated</h1>
+                    <h1 className='text-center text-2xl text-white' style={{ fontWeight: 500 }}></h1>
                 </div>
             </div>
         </div>

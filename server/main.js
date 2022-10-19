@@ -33,7 +33,7 @@ app.get('/getlectures', (req, res) => {
         const day = days.Days
         day1 = String(day)[0]
         day2 = String(day)[1]
-        if (weekDay == day1 || weekDay == day2) {
+        if (weekDay >= day1 && weekDay <= day2) {
           LectureArray.push(days)
         }
       })
@@ -42,10 +42,41 @@ app.get('/getlectures', (req, res) => {
   })
 })
 
+app.get('/attdetails', (req, res) => {
+  allLectures = AttandanceModel.find({ "Status": "present" }, (err, lec) => {
+    if (err) {
+      res.status(500).send('internal server error. Please try again later !')
+    } else {
+      let totalClass = 0;
+      let present = 0;
+      lec.map((seclec) => {
+        const onlyLectures = seclec.Lectures;
+        onlyLectures.map((singleLec) => {
+          const jsonLec = singleLec.toObject()
+          if (jsonLec['Status'] == 'present') {
+            present = present + 1;
+            totalClass = totalClass + 1
+          } else if (jsonLec['Status'] == 'absent') {
+            totalClass = totalClass + 1;
+          }
+        })
+      })
+
+      const percentage = present / totalClass * 100
+      res.status(200).json({
+        "totallec": totalClass,
+        "percentage": percentage,
+        "present": present,
+      })
+
+    }
+  })
+})
+
 app.get('/newlecture', (req, res) => {
   const NewLecture = new LectureModel({
-    Name: 'Trignometry',
-    Days: 12,
+    Name: 'ENV',
+    Days: 56,
     Course: "BSC-NM"
   })
   NewLecture.save()
